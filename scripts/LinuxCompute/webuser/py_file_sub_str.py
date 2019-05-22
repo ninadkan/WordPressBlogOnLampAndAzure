@@ -1,4 +1,4 @@
-filename = 'wordpress.conf'
+filename = '/etc/apache2/sites-available/wordpress.conf'
 originalstr='<VirtualHost *:80>'
 finalstr='<VirtualHost *:80> \n\t ServerName ninadkanthi.co.uk \n\t ServerAlias www.ninadkanthi.co.uk'
 

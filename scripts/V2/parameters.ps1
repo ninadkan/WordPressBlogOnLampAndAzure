@@ -44,6 +44,14 @@ $AvailabilitySetName = "blog-AvailabilitySet"
 $FrontEndVMName = "blogFrontEndVM"
 $BackEndVMName = "blogBackEndVM"
 
+$frontEndStorageAccountName1 = "frontendwebserver1"
+$frontEndStorageAccountName2 = "frontendwebserver2"
+$diagnosticsStorageAccountName = "ninadkvmdiagnostics"
+
+
+
+
+
 
 
 

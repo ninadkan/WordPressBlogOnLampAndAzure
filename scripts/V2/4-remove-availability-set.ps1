@@ -1,12 +1,43 @@
 ﻿. "$PSScriptRoot\login.ps1"
 
-$availabilitySet = Get-AzAvailabilitySet  -ResourceGroupName $RESOURCEGROUP_NAME -Name $AvailabilitySetName -ErrorAction SilentlyContinue
 
-if ($availabilitySet)
+# remove container files
+
+
+#$storageAccount = Get-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $frontEndStorageAccountName1
+Function clearContainer($storageAccountName, $containerName, $FileRemovalFilter)
 {
-    # imagine that none of the other constructs are created!!!
-    $availabilitySet = Remove-AzAvailabilitySet -ResourceGroupName $RESOURCEGROUP_NAME -Name $AvailabilitySetName
+    $accnt = Get-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName -ErrorAction Stop
+    $storageKey = (Get-AzStorageAccountKey -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName).Value[0]
+    $context = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageKey
+    $files = Get-AzStorageBlob -Container $containerName -Context $context -Blob $FileRemovalFilter
+
+    if ($files)
+    {
+        for ($i=0; $i -le $files.Length; $i++)
+        {
+            $blobName = $files[$i].Name
+            if ($blobName)
+            {
+                Remove-AzStorageBlob -Container $containerName -Context $context -Blob $blobName
+            }
+        }
+    }
 }
 
 
-$availabilitySet
+clearContainer -storageAccountName $frontEndStorageAccountName1 -containerName "vhds" -FileRemovalFilter "*.vhd"
+clearContainer -storageAccountName $frontEndStorageAccountName2 -containerName "vhds" -FileRemovalFilter "*.vhd"
+
+
+
+#$availabilitySet = Get-AzAvailabilitySet  -ResourceGroupName $RESOURCEGROUP_NAME -Name $AvailabilitySetName -ErrorAction SilentlyContinue
+
+#if ($availabilitySet)
+#{
+    # imagine that none of the other constructs are created!!!
+    #$availabilitySet = Remove-AzAvailabilitySet -ResourceGroupName $RESOURCEGROUP_NAME -Name $AvailabilitySetName
+#}
+
+
+#$availabilitySet
