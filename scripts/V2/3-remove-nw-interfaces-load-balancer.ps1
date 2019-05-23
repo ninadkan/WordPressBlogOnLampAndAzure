@@ -13,17 +13,17 @@ Function removeNetworkInterface($networkInterfaceName )
 $loadBalancer = Get-AzLoadBalancer -ResourceGroupName $RESOURCEGROUP_NAME -Name $LoadBalancerName -ErrorAction SilentlyContinue
 if ($loadBalancer)
 {
-    $natrule1 = Get-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName1 -ErrorAction SilentlyContinue
-    if ($natrule1)
-    {
-        Remove-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName1
-    }
+    #$natrule1 = Get-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName1 -ErrorAction SilentlyContinue
+    #if ($natrule1)
+    #{
+    #    Remove-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName1
+    #}
 
-    $natrule2 = Get-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName2 -ErrorAction SilentlyContinue
-    if ($natrule2)
-    {
-        Remove-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName2
-    }
+    #$natrule2 = Get-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName2 -ErrorAction SilentlyContinue
+    #if ($natrule2)
+    #{
+    #    Remove-AzLoadBalancerInboundNatRuleConfig -LoadBalancer $loadBalancer -Name $natRuleName2
+    #}
 
     $loadBalancerRule = Get-AzLoadBalancerRuleConfig -Name $loadBalancerRuleName -LoadBalancer $loadBalancer -ErrorAction SilentlyContinue
     if ($loadBalancerRule)

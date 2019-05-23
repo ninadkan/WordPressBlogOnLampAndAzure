@@ -1,0 +1,12 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "loadBalancers_blogs_load_balancer_name": {
+            "value": "blogs-load-balancer"
+        },
+        "publicIPAddresses_blogSiteIpAddress_v2_externalid": {
+            "value": "/subscriptions/4ca27440-4053-487c-b024-37a2d898d6da/resourceGroups/blog-rg/providers/Microsoft.Network/publicIPAddresses/blogSiteIpAddress-v2"
+        }
+    }
+}
