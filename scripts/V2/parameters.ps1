@@ -9,7 +9,7 @@ $DNSNAME = "$SUBSCRIPTION"
 #$HOSTNAME = "$SERVICEPLAN_APPNAME.azurewebsites.net"
 # Following variables are double defined in the parameters file as well
 
-$publicIpName="blogSiteIpAddress$Version"
+$publicIpName="SitePublicIp$Version"
 $dnsPrefix="ninadkanthi$Version"
 $virtualMachineNameFrontEnd="linuxwebfrontend$Version"
 $virtualMachineNameBackEnd="linuxwebfrontend$Version"
@@ -18,18 +18,18 @@ $RecordSetName = "blogs"
 
 $VirtualNetworkName = "blogs-vnet"
 
-$FrontEndSubnetName = "blogs-subnet-frontend"
-$BackendSubnetName = "blogs-subnet-backend"
+$FrontEndSubnetName = "subnet-frontend$Version"
+$BackendSubnetName = "subnet-backend$Version"
 
-$FrontEndNSGName = "blogs-nsg-frontend"
-$BackEndNSGName = "blogs-nsg-backend"
+$FrontEndNSGName = "nsg-frontend$Version"
+$BackEndNSGName = "nsg-backend$Version"
 
 $NwInterfaceFront1 = "NetworkInterface-Front-1"
 $NwInterfaceFront2 = "NetworkInterface-Front-2"
 $NwInterfaceBack1 = "NetworkInterface-Back-1"
-$NwInterfaceBack2 = "NetworkInterface-Back-2"
 
-$LoadBalancerName ="blogs-load-balancer"
+
+$LoadBalancerName ="load-balancer$Version"
 
 $frontEndLBPoolName = "frontEndLoadBlanacerPool"
 $backEndLBPoolName = "BackEndLoadBalancerPool"
@@ -37,16 +37,16 @@ $healthProbeName = "LoadBalancerHealthProbe"
 $loadBalancerRuleName = "LoadBalancerRule"
 
 $natRuleName1 = "LoadBalancerNATRule1"
-$natRuleName2 = "LoadBalancerNATRule2"
 
-$AvailabilitySetName = "blog-AvailabilitySet"
 
-$FrontEndVMName = "blogFrontEndVM"
-$BackEndVMName = "blogBackEndVM"
+$AvailabilitySetName = "AvailabilitySet$Version"
 
-$frontEndStorageAccountName1 = "frontendwebserver1"
-$frontEndStorageAccountName2 = "frontendwebserver2"
-$diagnosticsStorageAccountName = "ninadkvmdiagnostics"
+$FrontEndVMName = "FrontEndVM$Version"
+$BackEndVMName = "BackEndVM$Version"
+
+$frontEndStorageAccountName1 = "frontendwebserver1$Version"
+$frontEndStorageAccountName2 = "frontendwebserver2$Version"
+$diagnosticsStorageAccountName = "ninadkvmdiagnostics$Version"
 
 
 

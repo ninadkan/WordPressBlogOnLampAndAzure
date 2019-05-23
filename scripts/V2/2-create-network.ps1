@@ -1,24 +1,33 @@
 ﻿. "$PSScriptRoot\login.ps1"
 
-Function createNSG($NsgName)
+Function createNSG($NsgName,  $addRules)
 {
     $NSG = Get-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME -Name $NsgName -ErrorAction SilentlyContinue
     if (-not $NSG)
     {
-        Write-Host -ForegroundColor Green "creating a new NSG '$NsgName' ... "
-        $rules = @()
-        $rdpRule = New-AzNetworkSecurityRuleConfig -Name "rdp-rule" -Description "Allow RDP" -Access Allow `
-        -Protocol Tcp -Direction Inbound -Priority 340 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 22
-        $httpRule = New-AzNetworkSecurityRuleConfig -Name "http-rule" -Description "Allow HTTP" -Access Allow `
-        -Protocol Tcp -Direction Inbound -Priority 300 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 80
+        if ($addRules)
+        {
+            Write-Host -ForegroundColor Green "creating new rule for '$NsgName' ... "
+            $rules = @()
+            $rdpRule = New-AzNetworkSecurityRuleConfig -Name "rdp-rule" -Description "Allow RDP" -Access Allow `
+            -Protocol Tcp -Direction Inbound -Priority 1000 -SourceAddressPrefix VirtualNetwork  -SourcePortRange * -DestinationAddressPrefix VirtualNetwork -DestinationPortRange 22
+            $httpRule = New-AzNetworkSecurityRuleConfig -Name "http-rule" -Description "Allow HTTP" -Access Allow `
+            -Protocol Tcp -Direction Inbound -Priority 1010 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 80
 
-        $httpsRule = New-AzNetworkSecurityRuleConfig -Name "https-rule" -Description "Allow HTTPS" -Access Allow `
-        -Protocol Tcp -Direction Inbound -Priority 320 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 443
+            $httpsRule = New-AzNetworkSecurityRuleConfig -Name "https-rule" -Description "Allow HTTPS" -Access Allow `
+            -Protocol Tcp -Direction Inbound -Priority 1020 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 443
 
-        $rules += $rdpRule 
-        $rules += $httpRule 
-        $rules += $httpsRule 
-        $NSG = New-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME -Location $LOCATION -Name $NsgName -SecurityRules $rules
+            $rules += $rdpRule 
+            $rules += $httpRule 
+            $rules += $httpsRule 
+            Write-Host -ForegroundColor Green "creating a new NSG '$NsgName' ... "
+            $NSG = New-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME -Location $LOCATION -Name $NsgName -SecurityRules $rules
+        }
+        else
+        {
+            Write-Host -ForegroundColor Green "creating a new NSG '$NsgName' ... "
+            $NSG = New-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME -Location $LOCATION -Name $NsgName
+        }
     }
     return $NSG
 }
@@ -55,7 +64,7 @@ if ($virtualNetwork)
 {
 
     # create the subnets
-    $frontEndSubnet = createSubNet -SubnetName $FrontEndSubnetName -virtualNetwork $virtualNetwork -AddresPrefix $frontendSubnetAddresPrefix
+    $frontEndSubnet = createSubNet -SubnetName $FrontEndSubnetName -virtualNetwork $virtualNetwork -AddresPrefix $frontendSubnetAddresPrefix 
     $backendSubnet = createSubNet -SubnetName $BackendSubnetName -virtualNetwork $virtualNetwork -AddresPrefix $backEndSubnetAdressPrefix 
 
     # check if subnets exists
@@ -77,8 +86,8 @@ if ($virtualNetwork)
         $virtualNetwork | Set-AzVirtualNetwork
 
         # lets update with NSGS
-        $frontendNSG = createNSG -NsgName $FrontEndNSGName
-        $backendNSG = createNSG -NsgName  $BackEndNSGName 
+        $frontendNSG = createNSG -NsgName $FrontEndNSGName -addRules $true
+        $backendNSG = createNSG -NsgName  $BackEndNSGName -addRules $false
 
 
         if ($frontendNSG)
