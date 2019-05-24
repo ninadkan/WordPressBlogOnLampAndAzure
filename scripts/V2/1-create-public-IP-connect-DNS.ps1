@@ -28,11 +28,19 @@ if ($publicIp)
 
     if ($ExistingDNSZone)
     {
-        $existingRecordSet = Get-AzDnsRecordSet -Name $RecordSetName -ResourceGroupName $RESOURCEGROUP_NAME -RecordType "A" -ZoneName $DNSNAME -ErrorAction SilentlyContinue
+        $existingRecordSet = Get-AzDnsRecordSet -Name $RecordSetName `
+                                    -ResourceGroupName $RESOURCEGROUP_NAME `
+                                    -RecordType "A" -ZoneName `
+                                    $DNSNAME -ErrorAction SilentlyContinue
         if (-not $existingRecordSet)
         {
             Write-Host -ForegroundColor Green "creating a new DNS Record entry... ";
-            $existingRecordSet = New-AzDnsRecordSet -Name $RecordSetName -RecordType "A" -ResourceGroupName $RESOURCEGROUP_NAME -Ttl 3600 -TargetResourceId $publicIp.Id -ZoneName $DNSNAME
+            $existingRecordSet = New-AzDnsRecordSet -Name $RecordSetName `
+                                    -RecordType "A" `
+                                    -ResourceGroupName $RESOURCEGROUP_NAME `
+                                    -Ttl 3600 `
+                                    -TargetResourceId $publicIp.Id `
+                                    -ZoneName $DNSNAME
         }
         else
         {
