@@ -15,11 +15,14 @@ if ($publicIp)
 {
     Write-Host  -ForegroundColor Green "Using the Public IP address variable";
     # create DNs Zone if it does not exists. 
-    $ExistingDNSZone = Get-AzDnsZone -Name $DNSNAME -ResourceGroupName $RESOURCEGROUP_NAME -ErrorAction Continue
+    $ExistingDNSZone = Get-AzDnsZone -Name $DNSNAME `
+                        -ResourceGroupName $RESOURCEGROUP_NAME `
+                        -ErrorAction Continue
     if (!$ExistingDNSZone)
     {
         Write-Host  -ForegroundColor Green  "Creating DNS Zone";
-        $ExistingDNSZone = New-AzDnsZone -Name $DNSNAME -ResourceGroupName $RESOURCEGROUP_NAME
+        $ExistingDNSZone = New-AzDnsZone -Name $DNSNAME `
+                            -ResourceGroupName $RESOURCEGROUP_NAME
     }
     else
     {
