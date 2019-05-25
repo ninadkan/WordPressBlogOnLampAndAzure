@@ -15,11 +15,14 @@ if ($publicIp)
 {
     Write-Host  -ForegroundColor Green "Using the Public IP address variable";
     # create DNs Zone if it does not exists. 
-    $ExistingDNSZone = Get-AzDnsZone -Name $DNSNAME -ResourceGroupName $RESOURCEGROUP_NAME -ErrorAction Continue
+    $ExistingDNSZone = Get-AzDnsZone -Name $DNSNAME `
+                        -ResourceGroupName $RESOURCEGROUP_NAME `
+                        -ErrorAction Continue
     if (!$ExistingDNSZone)
     {
         Write-Host  -ForegroundColor Green  "Creating DNS Zone";
-        $ExistingDNSZone = New-AzDnsZone -Name $DNSNAME -ResourceGroupName $RESOURCEGROUP_NAME
+        $ExistingDNSZone = New-AzDnsZone -Name $DNSNAME `
+                            -ResourceGroupName $RESOURCEGROUP_NAME
     }
     else
     {
@@ -28,11 +31,19 @@ if ($publicIp)
 
     if ($ExistingDNSZone)
     {
-        $existingRecordSet = Get-AzDnsRecordSet -Name $RecordSetName -ResourceGroupName $RESOURCEGROUP_NAME -RecordType "A" -ZoneName $DNSNAME -ErrorAction SilentlyContinue
+        $existingRecordSet = Get-AzDnsRecordSet -Name $RecordSetName `
+                                    -ResourceGroupName $RESOURCEGROUP_NAME `
+                                    -RecordType "A" -ZoneName `
+                                    $DNSNAME -ErrorAction SilentlyContinue
         if (-not $existingRecordSet)
         {
             Write-Host -ForegroundColor Green "creating a new DNS Record entry... ";
-            $existingRecordSet = New-AzDnsRecordSet -Name $RecordSetName -RecordType "A" -ResourceGroupName $RESOURCEGROUP_NAME -Ttl 3600 -TargetResourceId $publicIp.Id -ZoneName $DNSNAME
+            $existingRecordSet = New-AzDnsRecordSet -Name $RecordSetName `
+                                    -RecordType "A" `
+                                    -ResourceGroupName $RESOURCEGROUP_NAME `
+                                    -Ttl 3600 `
+                                    -TargetResourceId $publicIp.Id `
+                                    -ZoneName $DNSNAME
         }
         else
         {
