@@ -26,18 +26,32 @@ Function clearContainer($storageAccountName, $containerName, $FileRemovalFilter)
 }
 
 
+Function removeStorageAccount($storageAccountName)
+{
+    # Lets create the storage account now if it does not exist
+    $storageAccount = Get-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName -ErrorAction SilentlyContinue
+    if (!$storageAccount)
+    {
+        # create the storage account
+        $storageAccount = Remove-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName 
+    }
+}
+
+
 clearContainer -storageAccountName $frontEndStorageAccountName1 -containerName "vhds" -FileRemovalFilter "*.vhd"
 clearContainer -storageAccountName $frontEndStorageAccountName2 -containerName "vhds" -FileRemovalFilter "*.vhd"
 
+removeStorageAccount -storageAccountName $frontEndStorageAccountName1
+removeStorageAccount -storageAccountName $frontEndStorageAccountName2
+removeStorageAccount -storageAccountName $diagnosticsStorageAccountName
 
 
-#$availabilitySet = Get-AzAvailabilitySet  -ResourceGroupName $RESOURCEGROUP_NAME -Name $AvailabilitySetName -ErrorAction SilentlyContinue
-
-#if ($availabilitySet)
-#{
-    # imagine that none of the other constructs are created!!!
-    #$availabilitySet = Remove-AzAvailabilitySet -ResourceGroupName $RESOURCEGROUP_NAME -Name $AvailabilitySetName
-#}
 
 
-#$availabilitySet
+$availabilityset = get-azavailabilityset  -resourcegroupname $resourcegroup_name -name $availabilitysetname -erroraction silentlycontinue
+
+if ($availabilityset)
+{
+   #imagine that none of the other constructs are created!!!
+   $availabilityset = remove-azavailabilityset -resourcegroupname $resourcegroup_name -name $availabilitysetname
+}

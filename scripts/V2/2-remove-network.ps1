@@ -2,32 +2,44 @@
 
 Function removeNSG($NsgName)
 {
-    $NSG = Get-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME -Name $NsgName -ErrorAction SilentlyContinue
+    $NSG = Get-AzNetworkSecurityGroup `
+            -ResourceGroupName $RESOURCEGROUP_NAME `
+            -Name $NsgName -ErrorAction SilentlyContinue
     if ($NSG)
     {
-         $NSG = Remove-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME -Name $NsgName
+        #remove the NSG from the attached Subnet first
+         $NSG = Remove-AzNetworkSecurityGroup `
+            -ResourceGroupName $RESOURCEGROUP_NAME -Name $NsgName
     }
 }
 
 Function removeSubNet($SubnetName, $virtualNetwork)
 {
-    $Subnet = Get-AzVirtualNetworkSubnetConfig -Name $SubnetName -VirtualNetwork $virtualNetwork -ErrorAction SilentlyContinue
+    $Subnet = Get-AzVirtualNetworkSubnetConfig -Name $SubnetName `
+        -VirtualNetwork $virtualNetwork -ErrorAction SilentlyContinue
     if ($Subnet)
     {
-        $Subnet = Remove-AzVirtualNetworkSubnetConfig -Name $SubnetName -VirtualNetwork $virtualNetwork
+        $Subnet = Remove-AzVirtualNetworkSubnetConfig -Name $SubnetName `
+        -VirtualNetwork $virtualNetwork
+        $virtualNetwork | Set-AzVirtualNetwork
     }
     return $Subnet
 }
 
 
-$virtualNetwork  = Get-AzVirtualNetwork -Name $VirtualNetworkName -ResourceGroupName $RESOURCEGROUP_NAME -ErrorAction SilentlyContinue
+$virtualNetwork  = Get-AzVirtualNetwork -Name $VirtualNetworkName `
+        -ResourceGroupName $RESOURCEGROUP_NAME `
+        -ErrorAction SilentlyContinue
 if ($virtualNetwork)
 {
 
-    removeSubNet -SubnetName $FrontEndSubnetName -virtualNetwork $virtualNetwork
-    removeSubNet -SubnetName $BackendSubnetName -virtualNetwork $virtualNetwork
+    removeSubNet -SubnetName $FrontEndSubnetName `
+        -virtualNetwork $virtualNetwork
+    removeSubNet -SubnetName $BackendSubnetName `
+        -virtualNetwork $virtualNetwork
   
-    Remove-AzVirtualNetwork -ResourceGroupName $RESOURCEGROUP_NAME -Name $VirtualNetworkName
+    Remove-AzVirtualNetwork -ResourceGroupName $RESOURCEGROUP_NAME `
+        -Name $VirtualNetworkName
 }
 
 removeNsg -NsgName $FrontEndNSGName
