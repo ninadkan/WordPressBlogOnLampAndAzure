@@ -64,6 +64,7 @@ Function RegisterRP {
 # Script body
 # Execution begins here
 #******************************************************************************
+
 $ErrorActionPreference = "Stop"
 
 # sign in

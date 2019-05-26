@@ -11,7 +11,14 @@
 . "$PSScriptRoot\3-create-availability-set-storage.ps1"
 
 # 4. Create front-end VMs, Back-end VMs
-. "$PSScriptRoot\frontend-webserver\deploy.ps1"
+Write-Host 'Execute the database creation script from the following location' 
+Write-Host "$PSScriptRoot\ARM-Templates\backend-databaseserver-v2\deploy.ps1"
+Read-Host -Prompt "Press any key to continue..."
+           
+
+
+Write-Host 'Execute the dbserver scripts manually now';
+Read-Host -Prompt "Press any key to continue..."
 
 # 6. Configure Back-end VMS
 
