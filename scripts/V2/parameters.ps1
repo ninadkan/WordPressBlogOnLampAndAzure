@@ -44,9 +44,9 @@ $AvailabilitySetName = "AvailabilitySet$Version"
 $FrontEndVMName = "FrontEndVM$Version"
 $BackEndVMName = "BackEndVM$Version"
 
-$frontEndStorageAccountName1 = "frontendwebserver1$Version"
-$frontEndStorageAccountName2 = "frontendwebserver2$Version"
-$diagnosticsStorageAccountName = "ninadkvmdiagnostics$Version"
+$frontEndStorageAccountName1 = "frontendwebserver1"
+$frontEndStorageAccountName2 = "frontendwebserver2"
+$diagnosticsStorageAccountName = "ninadkvmdiagnostics"
 
 
 

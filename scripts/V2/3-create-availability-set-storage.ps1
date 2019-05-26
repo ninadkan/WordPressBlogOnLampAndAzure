@@ -1,6 +1,9 @@
 ﻿. "$PSScriptRoot\login.ps1"
 
-$availabilitySet = Get-AzAvailabilitySet  -ResourceGroupName $RESOURCEGROUP_NAME -Name $AvailabilitySetName -ErrorAction SilentlyContinue
+$availabilitySet = Get-AzAvailabilitySet  `
+    -ResourceGroupName $RESOURCEGROUP_NAME `
+    -Name $AvailabilitySetName `
+    -ErrorAction SilentlyContinue
 
 if (-not $availabilitySet)
 {
@@ -16,13 +19,20 @@ if (-not $availabilitySet)
 Function createStorageAccount($storageAccountName)
 {
     # Lets create the storage account now if it does not exist
-    $storageAccount = Get-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName -ErrorAction SilentlyContinue
+    $storageAccount = Get-AzStorageAccount `
+        -ResourceGroupName $RESOURCEGROUP_NAME `
+        -Name $storageAccountName `
+        -ErrorAction SilentlyContinue
     if (!$storageAccount)
     {
         # create the storage account
         Write-Host "Creating storage account '$storageAccountName'"
         $skuName = "Standard_LRS"
-        $storageAccount = New-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName -Location $LOCATION -SkuName $skuName
+        $storageAccount = New-AzStorageAccount `
+            -ResourceGroupName $RESOURCEGROUP_NAME `
+            -Name $storageAccountName `
+            -Location $LOCATION `
+            -SkuName $skuName
     }
 }
 

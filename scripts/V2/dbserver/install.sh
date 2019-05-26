@@ -2,11 +2,13 @@
 # This script should be copied to webuser, chmod + x 
 # and then executed to check sudo permissions grant
 echo '=========== default update and upgrade ======================='
-sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get update 
+sudo apt-get upgrade -y
+
+#sudo apt-get install debconf-utils
 
 echo '===========   mysqlinstallation        ======================='
-sudo apt-get install mysql-server
+sudo apt-get install -y mysql-server-5.7
 mysql_secure_installation
 
 echo '===========   mysqlinstallation        ======================='

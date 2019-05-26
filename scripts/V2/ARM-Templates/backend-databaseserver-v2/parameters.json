@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "uksouth"
+        },
+        "networkInterfaceName": {
+            "value": "NetworkInterface-Back-1"
+        },
+        "networkSecurityGroupId": {
+            "value": "/subscriptions/4ca27440-4053-487c-b024-37a2d898d6da/resourceGroups/blog-rg/providers/Microsoft.Network/networkSecurityGroups/nsg-backend-v2"
+        },
+        "subnetName": {
+            "value": "subnet-backend-v2"
+        },
+        "virtualNetworkId": {
+            "value": "/subscriptions/4ca27440-4053-487c-b024-37a2d898d6da/resourceGroups/blog-rg/providers/Microsoft.Network/virtualNetworks/blogs-vnet"
+        },
+        "virtualMachineName": {
+            "value": "backend-databaseserver-v2"
+        },
+        "virtualMachineRG": {
+            "value": "blog-rg"
+        },
+        "osDiskType": {
+            "value": "Standard_LRS"
+        },
+        "dataDisks": {
+            "value": [
+                {
+                    "lun": 0,
+                    "createOption": "attach",
+                    "caching": "None",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "backend-databaseserver-v2_DataDisk_0",
+                    "storageAccountType": null,
+                    "diskSizeGB": null
+                }
+            ]
+        },
+        "dataDiskResources": {
+            "value": [
+                {
+                    "name": "backend-databaseserver-v2_DataDisk_0",
+                    "diskSizeGB": 200,
+                    "sku": "Standard_LRS",
+                    "creationData": {
+                        "createOption": "empty"
+                    }
+                }
+            ]
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B1s"
+        },
+        "adminUsername": {
+            "value": "ninadk"
+        },
+        "adminPassword": {
+            "value": "<<PASSWORD_HERE>>"
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "ninadkvmdiagnostics"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "/subscriptions/4ca27440-4053-487c-b024-37a2d898d6da/resourceGroups/blog-rg/providers/Microsoft.Storage/storageAccounts/ninadkvmdiagnostics"
+        }
+    }
+}

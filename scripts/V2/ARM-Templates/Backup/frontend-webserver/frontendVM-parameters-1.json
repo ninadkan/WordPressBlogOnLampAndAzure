@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "uksouth"
+        },
+        "networkInterfaceName": {
+            "value": "NetworkInterface-Front-1"
+        },
+        "backendPoolId": {
+            "value": "/subscriptions/4ca27440-4053-487c-b024-37a2d898d6da/resourceGroups/blog-rg/providers/Microsoft.Network/loadBalancers/blogs-load-balancer/backendAddressPools/BackEndLoadBalancerPool"
+        },
+        "networkSecurityGroupName": {
+            "value": "blogs-nsg-frontend"
+        },
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "default-allow-ssh",
+                    "properties": {
+                        "priority": 1000,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceApplicationSecurityGroups": [],
+                        "destinationApplicationSecurityGroups": [],
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "22"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "blogs-subnet-frontend"
+        },
+        "virtualNetworkId": {
+            "value": "/subscriptions/4ca27440-4053-487c-b024-37a2d898d6da/resourceGroups/blog-rg/providers/Microsoft.Network/virtualNetworks/blogs-vnet"
+        },
+        "virtualMachineName": {
+            "value": "FrontEndWebServer-1"
+        },
+        "virtualMachineRG": {
+            "value": "blog-rg"
+        },
+        "diskNameSalt": {
+            "value": "20190521104126"
+        },
+        "storageAccountName": {
+            "value": "frontendwebserver1"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B1ms"
+        },
+        "adminUsername": {
+            "value": "ninadk"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "ninadkvmdiagnostics"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "/subscriptions/4ca27440-4053-487c-b024-37a2d898d6da/resourceGroups/blog-rg/providers/Microsoft.Storage/storageAccounts/blogstandardhdd"
+        },
+        "availabilitySetName": {
+            "value": "blog-AvailabilitySet"
+        }
+    }
+}
