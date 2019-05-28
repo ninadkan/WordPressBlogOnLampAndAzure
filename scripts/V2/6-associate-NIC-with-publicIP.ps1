@@ -34,10 +34,10 @@ Function DetachNICAndPublicIP($NicName, $PublicIPAddressName)
 
 
 #AttachNicAndPublicIP -NicName $NwInterfaceFront1 -PublicIPAddressName $publicIpName
-DetachNICAndPublicIP -NicName $NwInterfaceFront1 -PublicIPAddressName $publicIpName
+#DetachNICAndPublicIP -NicName $NwInterfaceFront1 -PublicIPAddressName $publicIpName
 
-AttachNicAndPublicIP -NicName $NwInterfaceFront2 -PublicIPAddressName $publicIpName
-#DetachNICAndPublicIP -NicName $NwInterfaceFront2 -PublicIPAddressName $publicIpName
+#AttachNicAndPublicIP -NicName $NwInterfaceFront2 -PublicIPAddressName $publicIpName
+DetachNICAndPublicIP -NicName $NwInterfaceFront2 -PublicIPAddressName $publicIpName
 
 
 
