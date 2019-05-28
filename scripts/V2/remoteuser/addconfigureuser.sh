@@ -3,7 +3,7 @@
 # chmod +x on this and then executed. 
 # this will add a webuser which will be used to install all the local 
 # software
-sudo adduser webuser
+sudo adduser --gecos "" webuser
 sudo usermod -aG sudo webuser
-su - webuser
+#su - webuser
 

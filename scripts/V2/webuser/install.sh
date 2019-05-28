@@ -5,14 +5,14 @@
 echo '************************************************************************'
 echo '************************************************************************'
 echo '************************************************************************'
-echo ' ensure that you have substituted value of password_here before ececuting'
+echo ' ensure that you have substituted value of password_here before executing'
 
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 
 echo 'installing apache2.............'
 
-sudo apt install apache2
+sudo apt install -y apache2
 
 echo 'restarting, enavbling apache 2' 
 sudo systemctl start apache2
@@ -22,7 +22,7 @@ apache2 -version
 
 echo 'installing php................'
 
-sudo apt-get install php7.0 libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-mbstring php7.0-gd php7.0-xml php7.0-xmlrpc php7.0-intl php7.0-soap php7.0-zip
+sudo apt-get install -y php7.0 libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-mbstring php7.0-gd php7.0-xml php7.0-xmlrpc php7.0-intl php7.0-soap php7.0-zip
 echo 'restarting apache2'
 
 sudo systemctl restart apache2
@@ -47,7 +47,7 @@ echo 'substituting values ......'
 
 sudo python py_file_replace_str.py $wpfilepath "database_name_here" "wordpress"
 sudo python py_file_replace_str.py $wpfilepath "username_here" "remotewpuser"
-sudo python py_file_replace_str.py $wpfilepath "password_here" "<<substitute here>>"
+sudo python py_file_replace_str.py $wpfilepath "password_here" "<<PASSWORD_HERE>>"
 sudo python py_file_replace_str.py $wpfilepath "localhost" "10.0.2.4"
 
 echo 'changing owner on folders...'

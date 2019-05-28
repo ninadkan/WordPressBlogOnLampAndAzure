@@ -41,7 +41,8 @@ $natRuleName1 = "LoadBalancerNATRule1"
 
 $AvailabilitySetName = "AvailabilitySet$Version"
 
-$FrontEndVMName = "FrontEndVM$Version"
+$FrontEndVMName1 = "frontendwebserver1"
+$FrontEndVMName2 = "frontendwebserver2"
 $BackEndVMName = "BackEndVM$Version"
 
 $frontEndStorageAccountName1 = "frontendwebserver1"
