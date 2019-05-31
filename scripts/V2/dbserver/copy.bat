@@ -1,5 +1,5 @@
-set password=<<PASSWORD_HERE>>
-set user=ninadk
+set password=<<InsertPasswordHere>>
+set user=webuser
 set ipAddress=10.0.2.4
 
 echo %user%@%ipAddress%

@@ -8,11 +8,20 @@ $availabilitySet = Get-AzAvailabilitySet  `
 if (-not $availabilitySet)
 {
     # imagine that none of the other constructs are created!!!
-    $availabilitySet = New-AzAvailabilitySet -PlatformUpdateDomainCount 2 `
+    Write-Host  -ForegroundColor Green  "Creating Availability Set '$AvailabilitySetName'"
+
+    $availabilitySet = New-AzAvailabilitySet `
+                            -PlatformUpdateDomainCount 2 `
                             -PlatformFaultDomainCount 2 `
                             -ResourceGroupName $RESOURCEGROUP_NAME `
                             -Name $AvailabilitySetName `
-                            -Location $LOCATION
+                            -Location $LOCATION `
+                            -Sku 'Aligned'
+                            
+}
+else
+{
+    Write-Warning "Availability already exists '$AvailabilitySetName'"
 }
 
 
@@ -23,10 +32,10 @@ Function createStorageAccount($storageAccountName)
         -ResourceGroupName $RESOURCEGROUP_NAME `
         -Name $storageAccountName `
         -ErrorAction SilentlyContinue
-    if (!$storageAccount)
+    if (-not $storageAccount)
     {
         # create the storage account
-        Write-Host "Creating storage account '$storageAccountName'"
+        Write-Host  -ForegroundColor Green  "Creating storage account '$storageAccountName'"
         $skuName = "Standard_LRS"
         $storageAccount = New-AzStorageAccount `
             -ResourceGroupName $RESOURCEGROUP_NAME `
@@ -34,11 +43,13 @@ Function createStorageAccount($storageAccountName)
             -Location $LOCATION `
             -SkuName $skuName
     }
+    else
+    {
+        Write-Warning "Storage already exists '$storageAccountName'"
+    }
 }
 
-createStorageAccount -storageAccountName $frontEndStorageAccountName1
-createStorageAccount -storageAccountName $frontEndStorageAccountName2
-createStorageAccount -storageAccountName $diagnosticsStorageAccountName
+createStorageAccount -storageAccountName $commonStorageAccountName
 
 
 

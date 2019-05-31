@@ -1,4 +1,4 @@
-set password=<<PASSWORD_HERE>>
+set password=<<InsertPasswordHere>>
 set user=webuser
 set ipAddress=10.0.1.4
 

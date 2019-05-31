@@ -1,16 +1,30 @@
 ﻿. "$PSScriptRoot\login.ps1"
 
-$existingRecordSet = Get-AzDnsRecordSet -Name $RecordSetName -ResourceGroupName $RESOURCEGROUP_NAME -RecordType "A" -ZoneName $DNSNAME -ErrorAction SilentlyContinue
+$existingRecordSet = Get-AzDnsRecordSet `
+    -Name $RecordSetName `
+    -ResourceGroupName $RESOURCEGROUP_NAME `
+    -RecordType "A" `
+    -ZoneName $DNSNAME `
+    -ErrorAction SilentlyContinue
 if ($existingRecordSet)
 {
-   $existingRecordSet = Remove-AzDnsRecordSet -Name $RecordSetName -RecordType "A" -ZoneName $DNSNAME -ResourceGroupName $RESOURCEGROUP_NAME
+   $existingRecordSet = Remove-AzDnsRecordSet `
+    -Name $RecordSetName `
+    -RecordType "A" `
+    -ZoneName $DNSNAME `
+    -ResourceGroupName $RESOURCEGROUP_NAME
 }
 
-$publicIp = Get-AzPublicIpAddress -Name $publicIpName -ResourceGroupName $RESOURCEGROUP_NAME -ErrorAction SilentlyContinue
+$publicIp = Get-AzPublicIpAddress `
+    -Name $publicIpName `
+    -ResourceGroupName $RESOURCEGROUP_NAME `
+    -ErrorAction SilentlyContinue
 
 if ($publicIp)
 {
-    Remove-AzPublicIpAddress -Name $publicIpName -ResourceGroupName $RESOURCEGROUP_NAME 
+    Remove-AzPublicIpAddress `
+        -Name $publicIpName `
+        -ResourceGroupName $RESOURCEGROUP_NAME 
 }
 
 # Don't remove the DNS ZONE, BAD

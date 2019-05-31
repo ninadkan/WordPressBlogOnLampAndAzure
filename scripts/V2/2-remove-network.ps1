@@ -11,6 +11,10 @@ Function removeNSG($NsgName)
          $NSG = Remove-AzNetworkSecurityGroup `
             -ResourceGroupName $RESOURCEGROUP_NAME -Name $NsgName
     }
+    else
+    {
+        Write-Warning "Not found '$NsgName' for Removal"
+    }
 }
 
 Function removeSubNet($SubnetName, $virtualNetwork)
@@ -22,6 +26,10 @@ Function removeSubNet($SubnetName, $virtualNetwork)
         $Subnet = Remove-AzVirtualNetworkSubnetConfig -Name $SubnetName `
         -VirtualNetwork $virtualNetwork
         $virtualNetwork | Set-AzVirtualNetwork
+    }
+    else
+    {
+        Write-Warning "Not found '$SubnetName' for Removal"
     }
     return $Subnet
 }
@@ -40,6 +48,10 @@ if ($virtualNetwork)
   
     Remove-AzVirtualNetwork -ResourceGroupName $RESOURCEGROUP_NAME `
         -Name $VirtualNetworkName
+}
+else
+{
+    Write-Warning "Not found '$VirtualNetworkName' for Removal"
 }
 
 removeNsg -NsgName $FrontEndNSGName

@@ -1,0 +1,25 @@
+1-create-public-IP-connect-DNS.ps1
+1-remove-public-IP-connect-DNS.ps1
+2-create-network.ps1
+2-remove-network.ps1
+3-create-availability-set-storage.ps1
+3-remove-availability-set-storage.ps1
+4-create-nw-interfaces-load-balancer.ps1
+4-remove-nw-interfaces-load-balancer.ps1
+5-create-VM.ps1
+5-remove-VM.ps1
+6-create-attach-temporary-publicIP.ps1
+6-detach-remove-temporaryIPaddress.ps1
+8-linux-scripts.ps1
+dbserver
+diagnostics-associate-NIC-with-publicIP.ps1
+Diagrams
+files.txt
+install.ps1
+login.ps1
+names
+NOT USED-create-load-balancer-associate-pools.ps1
+parameters.ps1
+publicKey
+uninstall.ps1
+webuser

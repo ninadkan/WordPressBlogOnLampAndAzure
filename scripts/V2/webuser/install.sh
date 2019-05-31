@@ -47,7 +47,7 @@ echo 'substituting values ......'
 
 sudo python py_file_replace_str.py $wpfilepath "database_name_here" "wordpress"
 sudo python py_file_replace_str.py $wpfilepath "username_here" "remotewpuser"
-sudo python py_file_replace_str.py $wpfilepath "password_here" "<<PASSWORD_HERE>>"
+sudo python py_file_replace_str.py $wpfilepath "password_here" "<<InsertPasswordHere>>"
 sudo python py_file_replace_str.py $wpfilepath "localhost" "10.0.2.4"
 
 echo 'changing owner on folders...'

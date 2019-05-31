@@ -3,33 +3,45 @@
 
 # remove container files
 
-
-
-
-
 Function removeStorageAccount($storageAccountName)
 {
     # Lets create the storage account now if it does not exist
-    $storageAccount = Get-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName -ErrorAction SilentlyContinue
-    if (!$storageAccount)
+    $storageAccount = Get-AzStorageAccount `
+        -ResourceGroupName $RESOURCEGROUP_NAME `
+        -Name $storageAccountName `
+        -ErrorAction SilentlyContinue
+    if ($storageAccount)
     {
-        # create the storage account
-        $storageAccount = Remove-AzStorageAccount -ResourceGroupName $RESOURCEGROUP_NAME -Name $storageAccountName 
+        Write-Host -ForegroundColor Green "Removing Storage  '$storageAccountName'"
+        $storageAccount = Remove-AzStorageAccount `
+            -ResourceGroupName $RESOURCEGROUP_NAME `
+            -Name $storageAccountName 
     }
+    else
+    {
+        Write-Warning "Not found '$storageAccountName' for Removal"
+    }
+
 }
 
 
-removeStorageAccount -storageAccountName $frontEndStorageAccountName1
-removeStorageAccount -storageAccountName $frontEndStorageAccountName2
-removeStorageAccount -storageAccountName $diagnosticsStorageAccountName
+removeStorageAccount -storageAccountName $commonStorageAccountName
 
 
-
-
-$availabilityset = get-azavailabilityset  -resourcegroupname $resourcegroup_name -name $availabilitysetname -erroraction silentlycontinue
+$availabilityset = get-azavailabilityset  `
+    -resourcegroupname $resourcegroup_name `
+    -name $availabilitysetname `
+    -erroraction silentlycontinue
 
 if ($availabilityset)
 {
    #imagine that none of the other constructs are created!!!
-   $availabilityset = remove-azavailabilityset -resourcegroupname $resourcegroup_name -name $availabilitysetname
+   Write-Host -ForegroundColor Green "Removing availabilityset  '$availabilitysetname'"
+   $availabilityset = remove-azavailabilityset `
+        -resourcegroupname $resourcegroup_name `
+        -name $availabilitysetname
+}
+else
+{
+    Write-Warning "Not found '$availabilitysetname' for Removal"
 }

@@ -1,14 +1,17 @@
 ﻿. "$PSScriptRoot\login.ps1"
 
 
-$publicIp = Get-AzPublicIpAddress -Name $publicIpName -ResourceGroupName $RESOURCEGROUP_NAME -ErrorAction SilentlyContinue
+$publicIp = Get-AzPublicIpAddress `
+    -Name $publicIpName `
+    -ResourceGroupName $RESOURCEGROUP_NAME `
+    -ErrorAction SilentlyContinue
 
 if (!$publicIp)
 {
     Write-Host -ForegroundColor Green "create a new static IP address ... ";
     $publicIp = New-AzPublicIpAddress  -Name $publicIpName `
-                        -ResourceGroupName $RESOURCEGROUP_NAME -AllocationMethod Static `
-                        -DomainNameLabel $dnsPrefix -Location $LOCATION -Sku "Standard"
+        -ResourceGroupName $RESOURCEGROUP_NAME -AllocationMethod Static `
+        -DomainNameLabel $dnsPrefix -Location $LOCATION -Sku "Standard"
 }
 
 if ($publicIp)
@@ -16,13 +19,13 @@ if ($publicIp)
     Write-Host  -ForegroundColor Green "Using the Public IP address variable";
     # create DNs Zone if it does not exists. 
     $ExistingDNSZone = Get-AzDnsZone -Name $DNSNAME `
-                        -ResourceGroupName $RESOURCEGROUP_NAME `
-                        -ErrorAction Continue
+                -ResourceGroupName $RESOURCEGROUP_NAME `
+                -ErrorAction Continue
     if (!$ExistingDNSZone)
     {
         Write-Host  -ForegroundColor Green  "Creating DNS Zone";
         $ExistingDNSZone = New-AzDnsZone -Name $DNSNAME `
-                            -ResourceGroupName $RESOURCEGROUP_NAME
+                        -ResourceGroupName $RESOURCEGROUP_NAME
     }
     else
     {
@@ -32,18 +35,18 @@ if ($publicIp)
     if ($ExistingDNSZone)
     {
         $existingRecordSet = Get-AzDnsRecordSet -Name $RecordSetName `
-                                    -ResourceGroupName $RESOURCEGROUP_NAME `
-                                    -RecordType "A" -ZoneName `
-                                    $DNSNAME -ErrorAction SilentlyContinue
+                        -ResourceGroupName $RESOURCEGROUP_NAME `
+                        -RecordType "A" -ZoneName `
+                        $DNSNAME -ErrorAction SilentlyContinue
         if (-not $existingRecordSet)
         {
             Write-Host -ForegroundColor Green "creating a new DNS Record entry... ";
             $existingRecordSet = New-AzDnsRecordSet -Name $RecordSetName `
-                                    -RecordType "A" `
-                                    -ResourceGroupName $RESOURCEGROUP_NAME `
-                                    -Ttl 3600 `
-                                    -TargetResourceId $publicIp.Id `
-                                    -ZoneName $DNSNAME
+                        -RecordType "A" `
+                        -ResourceGroupName $RESOURCEGROUP_NAME `
+                        -Ttl 3600 `
+                        -TargetResourceId $publicIp.Id `
+                        -ZoneName $DNSNAME
         }
         else
         {

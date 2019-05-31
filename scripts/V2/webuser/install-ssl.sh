@@ -6,12 +6,12 @@ echo 'installing and configuring the certificates on the machine............'
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository ppa:certbot/certbot 
 sudo apt-get update 
-sudo apt-get install -y certbot
-sudo certbot certonly --dry-run --webroot -w /var/www/html/wordpress -d blogs.ninadkanthi.co.uk
+#sudo apt-get install -y certbot
+#sudo certbot certonly --dry-run --webroot -w /var/www/html/wordpress -d blogs.ninadkanthi.co.uk
 #sudo certbot certonly --webroot -w /var/www/html/wordpress -d blogs.ninadkanthi.co.uk
 sudo chown -R webuser:webuser /var/log/apache2
 sudo chown -R www-data:www-data /var/www/html
-sudo chown -R webuser:webuser /etc/letsencrypt/live
+#sudo chown -R webuser:webuser /etc/letsencrypt/live
 
 sudo mkdir /etc/ninadkanthi.co.uk
 sudo chown -R webuser:webuser /etc/ninadkanthi.co.uk

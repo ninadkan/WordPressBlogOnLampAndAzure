@@ -6,33 +6,28 @@ Function createNSG($NsgName,  $addRules)
                                  -Name $NsgName -ErrorAction SilentlyContinue
     if (-not $NSG)
     {
+        Write-Host -ForegroundColor Green "creating a new NSG '$NsgName' ... "
         if ($addRules)
         {
+
             Write-Host -ForegroundColor Green "creating new rule for '$NsgName' ... "
             $rules = @()
-            $rdpRule = New-AzNetworkSecurityRuleConfig -Name "rdp-rule" `
-                                    -Description "Allow RDP" -Access Allow `
-                -Protocol Tcp -Direction Inbound -Priority 1000 `
-                -SourceAddressPrefix VirtualNetwork  `
-                -SourcePortRange * `
-                -DestinationAddressPrefix VirtualNetwork `
-                -DestinationPortRange 22
-            $httpRule = New-AzNetworkSecurityRuleConfig -Name "http-rule" `
+
+            $httpRule = New-AzNetworkSecurityRuleConfig -Name $httpSecurityRuleName `
                 -Description "Allow HTTP" -Access Allow `
                 -Protocol Tcp -Direction Inbound -Priority 1010 `
                 -SourceAddressPrefix Internet -SourcePortRange * `
                 -DestinationAddressPrefix * -DestinationPortRange 80
 
-            $httpsRule = New-AzNetworkSecurityRuleConfig -Name "https-rule" `
+            $httpsRule = New-AzNetworkSecurityRuleConfig -Name $httpsSecurityRuleName `
                 -Description "Allow HTTPS" -Access Allow `
                 -Protocol Tcp -Direction Inbound -Priority 1020 `
                 -SourceAddressPrefix Internet -SourcePortRange * `
                 -DestinationAddressPrefix * -DestinationPortRange 443
 
-            $rules += $rdpRule 
             $rules += $httpRule 
             $rules += $httpsRule 
-            Write-Host -ForegroundColor Green "creating a new NSG '$NsgName' ... "
+            
             $NSG = New-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME `
                 -Location $LOCATION `
                 -Name $NsgName `
@@ -40,10 +35,14 @@ Function createNSG($NsgName,  $addRules)
         }
         else
         {
-            Write-Host -ForegroundColor Green "creating a new NSG '$NsgName' ... "
             $NSG = New-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME `
-                    -Location $LOCATION -Name $NsgName
+                    -Location $LOCATION `
+                    -Name $NsgName
         }
+    }
+    else
+    {
+        Write-Warning ("Already exists - '$NsgName'")
     }
     return $NSG
 }
@@ -58,6 +57,10 @@ Function createSubNet($SubnetName, $virtualNetwork, $AddresPrefix)
         $Subnet = Add-AzVirtualNetworkSubnetConfig -Name $SubnetName `
                 -AddressPrefix $AddresPrefix -VirtualNetwork $virtualNetwork
     }
+    else
+    {
+        Write-Warning ("Already exists - '$SubnetName'")
+    }
     return $Subnet
 }
 
@@ -69,7 +72,7 @@ $backEndSubnetAdressPrefix = "10.0.2.0/24"
 
 
 $virtualNetwork  = Get-AzVirtualNetwork -Name $VirtualNetworkName `
-        -ResourceGroupName $RESOURCEGROUP_NAME -ErrorAction SilentlyContinue
+        -ResourceGroupName $RESOURCEGROUP_NAME -ErrorAction SilentlyContinue 
 if (-not $virtualNetwork)
 {
     Write-Host -ForegroundColor Green "create a new VNET ... ";
@@ -78,7 +81,10 @@ if (-not $virtualNetwork)
                         -Location $LOCATION -Name $VirtualNetworkName `
                         -AddressPrefix $VnetAddressPrefix
 }
-
+else
+{
+     Write-Warning ("Already exists - '$VirtualNetworkName'")
+}
 
 if ($virtualNetwork)
 {
@@ -107,7 +113,7 @@ if ($virtualNetwork)
     else
     {
         # both subnets exist now; save status ; 
-        $virtualNetwork | Set-AzVirtualNetwork
+        $dummy = Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork 
 
         # lets update with NSGS
         $frontendNSG = createNSG -NsgName $FrontEndNSGName -addRules $true
@@ -116,9 +122,9 @@ if ($virtualNetwork)
 
         if ($frontendNSG)
         {
-            Set-AzVirtualNetworkSubnetConfig -Name $FrontEndSubnetName `
+            $dummy = Set-AzVirtualNetworkSubnetConfig -Name $FrontEndSubnetName `
                 -VirtualNetwork $virtualNetwork -NetworkSecurityGroup $frontEndNSG `
-                -AddressPrefix $frontendSubnetAddresPrefix
+                -AddressPrefix $frontendSubnetAddresPrefix 
         }
         else
         {
@@ -128,7 +134,7 @@ if ($virtualNetwork)
 
         if ($backendNSG)
         {
-            Set-AzVirtualNetworkSubnetConfig -Name $BackendSubnetName `
+            $dummy = Set-AzVirtualNetworkSubnetConfig -Name $BackendSubnetName `
                     -VirtualNetwork $virtualNetwork `
                     -NetworkSecurityGroup $backendNSG `
                     -AddressPrefix $backEndSubnetAdressPrefix 
@@ -137,7 +143,7 @@ if ($virtualNetwork)
         {
             Write-Host -ForegroundColor Red "Error! NSG '$BackendSubnetName' not found"
         }
-        $virtualNetwork | Set-AzVirtualNetwork
+        $dummy =  Set-AzVirtualNetwork -VirtualNetwork $virtualNetwork
     }
 }
 else
