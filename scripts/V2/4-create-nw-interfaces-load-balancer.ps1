@@ -1,13 +1,12 @@
 ﻿. "$PSScriptRoot\login.ps1"$
 
-Function createNetworkInterface($networkInterfaceName, 
-                $Subnet, 
-                $NsgGroup, 
-                $virtualNetwork, 
-                $publicIp , 
-                $backEndPoolName = $null , 
-                $lb =$null,
-                $natRule =$null)
+Function createNetworkInterface($networkInterfaceName, # name of NIC
+                $Subnet, # Subnet where the NIC will be plugged in
+                $NsgGroup, # NSG where the created NIC will be placed nder
+                $backEndPoolName = $null , # load balancer back-end pool, 
+                                           #if specified, NIC is added there
+                $lb =$null, # name of load balancer, used to get the NST rule
+                $natRule =$null) # name of the NAT rule
 {
     $nwInterface = Get-AzNetworkInterface `
         -Name $networkInterfaceName `
@@ -30,9 +29,8 @@ Function createNetworkInterface($networkInterfaceName,
                 $nr = Get-AzLoadBalancerInboundNatRuleConfig `
                     -LoadBalancer $lb `
                     -Name $natRuleName1
-                    
    
-
+                # create NIC with NAT Rule + Back-end Pool + Subnet + NSG
                 $nwInterface = New-AzNetworkInterface `
                     -Name $networkInterfaceName `
                     -ResourceGroupName $RESOURCEGROUP_NAME `
@@ -45,6 +43,7 @@ Function createNetworkInterface($networkInterfaceName,
             }
             else
             {
+                # create NIC with Back-end Pool + Subnet + NSG
                 $nwInterface = New-AzNetworkInterface `
                     -Name $networkInterfaceName `
                     -ResourceGroupName $RESOURCEGROUP_NAME `
@@ -57,6 +56,7 @@ Function createNetworkInterface($networkInterfaceName,
         }
         else
         {
+            # create NIC with Subnet + NSG
             $nwInterface = New-AzNetworkInterface `
                 -Name $networkInterfaceName `
                 -ResourceGroupName $RESOURCEGROUP_NAME `
@@ -241,16 +241,14 @@ if ($loadBalancer)
     }
 
     
-    # And finally mother of all updates... fire
+    # And finally combination of all updates... fire
     $dummy = Set-AzLoadBalancer -LoadBalancer $loadBalancer
 
     # create the network interfaces now.
     $nwf1 = createNetworkInterface `
         -networkInterfaceName $NwInterfaceFront1 `
-        -virtualNetwork $virtualNetwork `
         -Subnet $frontEndSubnet `
         -NsgGroup $frontendNSG `
-        -publicIp $publicIp `
         -backEndPoolName $backEndLBPoolName `
         -lb $loadBalancer `
         -natRule $natRuleName1
@@ -259,20 +257,17 @@ if ($loadBalancer)
 
     $nwf2 = createNetworkInterface `
         -networkInterfaceName $NwInterfaceFront2 `
-        -virtualNetwork $virtualNetwork `
         -Subnet $frontEndSubnet `
         -NsgGroup $frontendNSG `
-        -publicIp $publicIp `
         -backEndPoolName $backEndLBPoolName `
         -lb $loadBalancer
         
 
     $nwb1 = createNetworkInterface `
         -networkInterfaceName $NwInterfaceBack1 `
-        -virtualNetwork $virtualNetwork `
         -Subnet $backendSubnet `
-        -NsgGroup $backendNSG `
-        -publicIp $publicIp
+        -NsgGroup $backendNSG
+
 
 }
 else

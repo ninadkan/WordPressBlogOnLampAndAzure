@@ -142,42 +142,6 @@ Function removeUnAttachedUnManagedDisks()
 }
 }
 
-
-
-#Function DetachNICAndPublicIP($NicName, $PublicIPAddressName)
-#{
-#    $vnet = Get-AzVirtualNetwork -Name $VirtualNetworkName -ResourceGroupName $RESOURCEGROUP_NAME
-#    $subnet = Get-AzVirtualNetworkSubnetConfig -Name $FrontEndSubnetName -VirtualNetwork $vnet
-#    $nic = Get-AzNetworkInterface -Name $NicName -ResourceGroupName $RESOURCEGROUP_NAME
-#    $pip = Get-AzPublicIpAddress -Name $PublicIPAddressName -ResourceGroupName $RESOURCEGROUP_NAME
-
-
-#    $ipConfig = Get-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -NetworkInterface $nic
-    #$nic | Set-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -Subnet $subnet  -Primary
-#    Set-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -NetworkInterface $nic -Subnet $subnet -Primary
-#    $nic | Set-AzNetworkInterface
-#}
-
-#Function RemoveSecondaryNIcs($SecondaryNICName)
-#{
-#
-#    $nic = Get-AzNetworkInterface `
-#            -Name $SecondaryNICName `
-#            -ResourceGroupName $RESOURCEGROUP_NAME `
-#            -ErrorAction SilentlyContinue
-
-#    if ($nic)
-#    {
-#        Write-Host -ForegroundColor Green `
-#            "Removing the secondary NIC '$SecondaryNICName'... ";
-#        Remove-AzNetworkInterface `
-#            -Name $SecondaryNICName `
-#            -ResourceGroupName $RESOURCEGROUP_NAME
- 
-#    }
-#}
-
-
 removeLinuxVM -VMName $FrontEndVMName1
 removeLinuxVM -VMName $FrontEndVMName2
 removeLinuxVM -VMName $BackEndVMName
@@ -186,7 +150,5 @@ removeLinuxVM -VMName $BackEndVMName
 removeUnAttachedUnManagedDisks
 removeManagedDisks
 
-#RemoveSecondaryNIcs -SecondaryNICName $SecondaryNwInterfaceFrontEnd1Name
-#RemoveSecondaryNIcs -SecondaryNICName $SecondaryNwInterfaceFrontEnd2Name
-#RemoveSecondaryNIcs -SecondaryNICName $SecondaryNwInterfaceBackEnd
+
 
