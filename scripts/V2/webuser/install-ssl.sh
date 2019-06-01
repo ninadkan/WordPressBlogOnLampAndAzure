@@ -3,22 +3,32 @@
 echo 'Important: Before executing this script you set the https from wordpress admin site'
 
 echo 'installing and configuring the certificates on the machine............'
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository ppa:certbot/certbot 
-sudo apt-get update 
+# ECHO if installing from letscertify, uncomment the following sections
+# ================  Lets encrypt SSL                  ========================
+#sudo apt-get install -y software-properties-common
+#sudo add-apt-repository ppa:certbot/certbot 
+#sudo apt-get update 
 #sudo apt-get install -y certbot
 #sudo certbot certonly --dry-run --webroot -w /var/www/html/wordpress -d blogs.ninadkanthi.co.uk
 #sudo certbot certonly --webroot -w /var/www/html/wordpress -d blogs.ninadkanthi.co.uk
+#sudo chown -R webuser:webuser /etc/letsencrypt/live
+#sudo chown -R www-data:www-data /etc/letsencrypt/
+# ================  Lets encrypt SSL                  ========================
+
+
 sudo chown -R webuser:webuser /var/log/apache2
 sudo chown -R www-data:www-data /var/www/html
-#sudo chown -R webuser:webuser /etc/letsencrypt/live
 
+# If installing from pre-configured SSL files uncomment following lines
+# ================  Pre-configured SSL                  ========================
+sudo apt-get update 
 sudo mkdir /etc/ninadkanthi.co.uk
 sudo chown -R webuser:webuser /etc/ninadkanthi.co.uk
 sudo chown -R www-data:www-data /etc/ninadkanthi.co.uk
 sudo cp *.crt /etc/ninadkanthi.co.uk
 sudo cp *.key /etc/ninadkanthi.co.uk 
 sudo cp *.csr /etc/ninadkanthi.co.uk
+# ================  Pre-configured SSL                  ========================
 
 
 #cat /etc/letsencrypt/live/blogs.ninadkanthi.co.uk/README:q!
