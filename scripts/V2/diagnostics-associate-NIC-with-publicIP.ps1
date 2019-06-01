@@ -1,6 +1,5 @@
 ﻿. "$PSScriptRoot\login.ps1"
 
-# this is used for debugging where the public IP can be plugged directly with the Network Interface cards
 
 
 
@@ -204,6 +203,73 @@ Function clearContainer($storageAccountName, $containerName, $FileRemovalFilter)
 #RemoveSecondaryNIcs -SecondaryNICName $SecondaryNwInterfaceFrontEnd2Name
 #RemoveSecondaryNIcs -SecondaryNICName $SecondaryNwInterfaceBackEnd
 
+        # Will this work? I am creating a new NIC with previous name
+        #$nic = New-AzNetworkInterface `
+        #    -Name $nicName `
+        #    -ResourceGroupName $RESOURCEGROUP_NAME `
+        #    -Location $LOCATION `
+        #    -SubnetId $Subnet.Id `
+        #    -NetworkSecurityGroupId $NSG.Id `
+        #    -PublicIpAddressId $temporaryIP.Id
+
+        #Set-AzNetworkInterfaceIpConfig `
+        #    -Name $nic.IpConfigurations[0].Name `
+        #    -NetworkInterface $nic `
+
+
+        #$nwInterface = Get-AzNetworkInterface `
+        #    -Name $originalNetworkInterfaceName `
+        #    -ResourceGroupName $RESOURCEGROUP_NAME
+        #$nwInterface.Primary = $true
+        #Set-AzNetworkInterface -NetworkInterface $nwInterface
+
+        #Add-AzVMNetworkInterface `
+        #    -VM $VM `
+        #    -NetworkInterface $nic 
+
+        #$VM.NetworkProfile.NetworkInterfaces[0].Primary = $true; 
+                
+                
+        #Update-AzVM `
+        #    -ResourceGroupName $RESOURCEGROUP_NAME `
+        #    -VM $VM
+
+#Stop-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName1
+#Stop-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName2
+#Stop-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $BackEndVMName
+
+#Start-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName1
+#Start-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName2
+#Start-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $BackEndVMName
+
+# this is used for debugging where the public IP can be plugged directly with the Network Interface cards
+
+#function detachPublicIPfromNIC($nicName)
+#{
+#    $nic = Get-AzNetworkInterface `
+#            -Name $nicName `
+#            -ResourceGroupName $RESOURCEGROUP_NAME
+   #$nic.IpConfigurations[0].PublicIpAddress=$null
+    #Set-AzNetworkInterface -NetworkInterface $nic 
+#    $ipConfig = Get-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -NetworkInterface $nic
+    #$nic | Set-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -Subnet $subnet  -Primary
+#    Set-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -NetworkInterface $nic -Subnet $subnet -Primary
+#    $nic | Set-AzNetworkInterface
+#}
+
+
+    #$nsg = Get-AzureRmNetworkSecurityGroup
+    #$nsg | Add-AzureRmNetworkSecurityRuleConfig 
+    #$nsg | Set-AzureRmNetworkSecurityGroup
+
+
+    # detach the public IP from the NICs
+#detachPublicIPfromNIC -nicName $NwInterfaceBack1
+#detachPublicIPfromNIC -nicName $NwInterfaceFront1
+#detachPublicIPfromNIC -nicName $NwInterfaceFront2
+
+# Backward compatibility
+#removeTemporaryIPAddresses -TempIPAddressName  $temporaryIPAddressName
 
 
 

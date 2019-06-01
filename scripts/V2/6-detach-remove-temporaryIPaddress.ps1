@@ -48,26 +48,9 @@ function removeTemporaryIPAddresses($TempIPAddressName, $nicName)
 }
 
 
-
-#function detachPublicIPfromNIC($nicName)
-#{
-#    $nic = Get-AzNetworkInterface `
-#            -Name $nicName `
-#            -ResourceGroupName $RESOURCEGROUP_NAME
-   #$nic.IpConfigurations[0].PublicIpAddress=$null
-    #Set-AzNetworkInterface -NetworkInterface $nic 
-#    $ipConfig = Get-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -NetworkInterface $nic
-    #$nic | Set-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -Subnet $subnet  -Primary
-#    Set-AzNetworkInterfaceIpConfig -Name $nic.IpConfigurations[0].Name -NetworkInterface $nic -Subnet $subnet -Primary
-#    $nic | Set-AzNetworkInterface
-#}
-
-
 Function closeRDPPortForNSGs($NsgName)
 {
-    #$nsg = Get-AzureRmNetworkSecurityGroup
-    #$nsg | Add-AzureRmNetworkSecurityRuleConfig 
-    #$nsg | Set-AzureRmNetworkSecurityGroup
+
 
     $NSG = Get-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME `
                                  -Name $NsgName
@@ -90,8 +73,10 @@ Function closeRDPPortForNSGs($NsgName)
 
         if ($ruleExist)
         {
-            Remove-AzNetworkSecurityRuleConfig -Name $rdpSecurityRuleName -NetworkSecurityGroup $NSG
-            Set-AzNetworkSecurityGroup -NetworkSecurityGroup $NSG
+            Remove-AzNetworkSecurityRuleConfig `
+                -Name $rdpSecurityRuleName -NetworkSecurityGroup $NSG
+            Set-AzNetworkSecurityGroup `
+                -NetworkSecurityGroup $NSG
         }
         else
         {
@@ -109,10 +94,7 @@ Function closeRDPPortForNSGs($NsgName)
 closeRDPPortForNSGs -NsgName $FrontEndNSGName
 closeRDPPortForNSGs -NsgName $BackEndNSGName
 
-# detach the public IP from the NICs
-#detachPublicIPfromNIC -nicName $NwInterfaceBack1
-#detachPublicIPfromNIC -nicName $NwInterfaceFront1
-#detachPublicIPfromNIC -nicName $NwInterfaceFront2
+
 
 # Remove Temporary IP addresses
 removeTemporaryIPAddresses `
@@ -124,6 +106,5 @@ removeTemporaryIPAddresses `
 removeTemporaryIPAddresses `
     -TempIPAddressName  $temporaryIPAddrBackEndName `
     -nicName $NwInterfaceBack1
-# Backward compatibility
-#removeTemporaryIPAddresses -TempIPAddressName  $temporaryIPAddressName
+
 

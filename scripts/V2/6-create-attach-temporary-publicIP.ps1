@@ -4,14 +4,11 @@ Function createAttach_PublicIP_NIC($IpAddressName, `
                         $nicName                
                         )
 {
-
-
     #create a temporary public IP address
     $temporaryIP = Get-AzPublicIpAddress `
         -Name $IpAddressName `
         -ResourceGroupName $RESOURCEGROUP_NAME `
         -ErrorAction SilentlyContinue
-
 
     if (-not $temporaryIP)
     {
@@ -25,17 +22,15 @@ Function createAttach_PublicIP_NIC($IpAddressName, `
                             -Sku "Standard"
     }
         
-    $ipAddress = $temporaryIP.IpAddress
-
+    
     $nic = Get-AzNetworkInterface `
             -Name $nicName `
             -ResourceGroupName $RESOURCEGROUP_NAME `
                
-
     if ($nic)
     {
         Write-Host -ForegroundColor Green `
-            "create a new network interface  '$nicName'... "
+            "Attaching the created public IP to NIC '$nicName'... "
         Set-AzNetworkInterfaceIpConfig `
             -Name $nic.IpConfigurations[0].Name `
             -NetworkInterface $nic `
@@ -45,58 +40,23 @@ Function createAttach_PublicIP_NIC($IpAddressName, `
             -LoadBalancerInboundNatRule $nic.IpConfigurations[0].LoadBalancerInboundNatRules `
             -Primary `
             -PublicIpAddress $temporaryIP 
-           
-        # Will this work? I am creating a new NIC with previous name
-        #$nic = New-AzNetworkInterface `
-        #    -Name $nicName `
-        #    -ResourceGroupName $RESOURCEGROUP_NAME `
-        #    -Location $LOCATION `
-        #    -SubnetId $Subnet.Id `
-        #    -NetworkSecurityGroupId $NSG.Id `
-        #    -PublicIpAddressId $temporaryIP.Id
-
-        #Set-AzNetworkInterfaceIpConfig `
-        #    -Name $nic.IpConfigurations[0].Name `
-        #    -NetworkInterface $nic `
-            
-
-        #$nic.Primary = $false
-        Set-AzNetworkInterface -NetworkInterface $nic
-
-            
-        #$nwInterface = Get-AzNetworkInterface `
-        #    -Name $originalNetworkInterfaceName `
-        #    -ResourceGroupName $RESOURCEGROUP_NAME
-        #$nwInterface.Primary = $true
-        #Set-AzNetworkInterface -NetworkInterface $nwInterface
-
-        #Add-AzVMNetworkInterface `
-        #    -VM $VM `
-        #    -NetworkInterface $nic 
-
-        #$VM.NetworkProfile.NetworkInterfaces[0].Primary = $true; 
-                
-                
-        #Update-AzVM `
-        #    -ResourceGroupName $RESOURCEGROUP_NAME `
-        #    -VM $VM
-
+         Set-AzNetworkInterface -NetworkInterface $nic
     }
+    $ipAddress = $temporaryIP.IpAddress
     Write-Host -ForegroundColor Cyan "Temporary IP address = '$ipAddress', NIC = '$nicName'"
 }
 
 
 Function openRDPPortForNSGs($NsgName)
 {
-
-    $NSG = Get-AzNetworkSecurityGroup -ResourceGroupName $RESOURCEGROUP_NAME `
-                                 -Name $NsgName
+    $NSG = Get-AzNetworkSecurityGroup `
+        -ResourceGroupName $RESOURCEGROUP_NAME `
+        -Name $NsgName
     if ($NSG)
     {
         Write-Host -ForegroundColor Green "creating new rule for '$NsgName' ... "
 
         $existingRules = $NSG.SecurityRules
-
         $ruleExist = $false
 
         ForEach ($existingrule in $existingRules) { 
@@ -107,7 +67,6 @@ Function openRDPPortForNSGs($NsgName)
                break 
             } 
         }
-         
 
         if (-not $ruleExist)
         {
@@ -123,9 +82,7 @@ Function openRDPPortForNSGs($NsgName)
                 -DestinationPortRange 22 `
                 -SourceAddressPrefix * `
                 -DestinationAddressPrefix *
-
             Set-AzNetworkSecurityGroup -NetworkSecurityGroup $NSG
-
         }
         else
         {
@@ -139,12 +96,6 @@ Function openRDPPortForNSGs($NsgName)
     return $NSG
 }
 
-
-#Stop-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName1
-#Stop-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName2
-#Stop-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $BackEndVMName
-
-
 createAttach_PublicIP_NIC `
     -IpAddressName $temporaryIPAddrFrontEnd1Name `
     -nicName $NwInterfaceFront1
@@ -152,19 +103,14 @@ createAttach_PublicIP_NIC `
 createAttach_PublicIP_NIC `
     -IpAddressName $temporaryIPAddrFrontEnd2Name `
     -nicName $NwInterfaceFront2 
-
     
 createAttach_PublicIP_NIC `
     -IpAddressName $temporaryIPAddrBackEndName `
     -nicName $NwInterfaceBack1
     
-
 openRDPPortForNSGs -NsgName $FrontEndNSGName
 openRDPPortForNSGs -NsgName $BackEndNSGName
 
 
-#Start-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName1
-#Start-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $FrontEndVMName2
-#Start-AzVM -ResourceGroupName $RESOURCEGROUP_NAME -Name $BackEndVMName
 
 
