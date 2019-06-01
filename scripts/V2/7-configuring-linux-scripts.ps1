@@ -63,9 +63,3 @@ updateFilesWithIpAddress -IpAddressName $temporaryIPAddrBackEndName -configFileP
 
 
 
-#$dictionary = @{ "DomainName" = $tenantName;"TenantId" = $tenantId;"ClientId" = $serviceAadApplication.AppId;"ClientSecret" = $global:serviceAppKey.Value };
-#UpdateTextFile -configFilePath $configFile -dictionary $dictionary
-#sshIntoVM -IpAddressName $temporaryIPAddrBackEndName
-#attachPublicIPToNIC -IpAddressName $temporaryIPAddrFrontEnd1Name -nicName $NwInterfaceFront1
-#attachPublicIPToNIC -IpAddressName $temporaryIPAddrFrontEnd2Name -nicName $NwInterfaceFront2
-#attachPublicIPToNIC -IpAddressName $temporaryIPAddrBackEndName -nicName $NwInterfaceBack1
