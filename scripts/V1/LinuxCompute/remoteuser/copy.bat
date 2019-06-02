@@ -1,4 +1,4 @@
-set password=Dietpepsi-99!
+set password=<<PASSWORD_HERE>>
 set user=ninadk
 
 
