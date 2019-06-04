@@ -3,5 +3,5 @@ If you would to start your own blog, are technically minded, don’t mind instal
 <p> UPDATE : 23rd May 2019. v2 of this deployment is now available. Instead of previous one block monolithic archtecture the new solution is  highly scalable, robust solution and will leverage the cloud capabilities of scalability, resiliency and of back-up and restore. 
 </p>
 The complete new architecture is <p>
-<img src="scripts/V2/Pictures/new-target-architecture.png"/> 
+<img src="scripts/V2/Diagrams/new-target-architecture.png"/> 
   </P>
