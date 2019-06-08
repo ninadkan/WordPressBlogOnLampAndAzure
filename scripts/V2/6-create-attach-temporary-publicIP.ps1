@@ -31,7 +31,7 @@ Function createAttach_PublicIP_NIC($IpAddressName, `
     {
         Write-Host -ForegroundColor Green `
             "Attaching the created public IP to NIC '$nicName'... "
-        Set-AzNetworkInterfaceIpConfig `
+        $d =Set-AzNetworkInterfaceIpConfig `
             -Name $nic.IpConfigurations[0].Name `
             -NetworkInterface $nic `
             -Subnet $nic.IpConfigurations[0].Subnet `
@@ -40,7 +40,7 @@ Function createAttach_PublicIP_NIC($IpAddressName, `
             -LoadBalancerInboundNatRule $nic.IpConfigurations[0].LoadBalancerInboundNatRules `
             -Primary `
             -PublicIpAddress $temporaryIP 
-         Set-AzNetworkInterface -NetworkInterface $nic
+         $d = Set-AzNetworkInterface -NetworkInterface $nic
     }
     $ipAddress = $temporaryIP.IpAddress
     Write-Host -ForegroundColor Cyan "Temporary IP address = '$ipAddress', NIC = '$nicName'"
@@ -71,7 +71,7 @@ Function openRDPPortForNSGs($NsgName)
         if (-not $ruleExist)
         {
             # Add rdpRule to the collection
-            Add-AzNetworkSecurityRuleConfig `
+            $d= Add-AzNetworkSecurityRuleConfig `
                 -Access Allow `
                 -Direction Inbound `
                 -Priority 1050 `
@@ -82,7 +82,7 @@ Function openRDPPortForNSGs($NsgName)
                 -DestinationPortRange 22 `
                 -SourceAddressPrefix * `
                 -DestinationAddressPrefix *
-            Set-AzNetworkSecurityGroup -NetworkSecurityGroup $NSG
+            $d = Set-AzNetworkSecurityGroup -NetworkSecurityGroup $NSG
         }
         else
         {

@@ -60,6 +60,8 @@ updateFilesWithIpAddress -IpAddressName $temporaryIPAddrFrontEnd1Name -configFil
 updateFilesWithIpAddress -IpAddressName $temporaryIPAddrFrontEnd2Name -configFilePath $webservr -key $key2 
 updateFilesWithIpAddress -IpAddressName $temporaryIPAddrBackEndName -configFilePath $dbserver -key $key 
 
+#openssl req -new -newkey rsa:2048 -nodes -keyout ninadkanthi.co.uk.key -out ninadkanthi.co.uk.csr
+
 
 
 
