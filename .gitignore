@@ -2,3 +2,12 @@
 *.zip
 NoAdd/
 scripts/LinuxCompute/webuser/test
+scripts/V2/webuser/keysBackup/
+scripts/V2/webuser/letsencrypt/
+scripts/V2/webuser/ninadkanthi.co.uk/
+scripts/V2/webuser/scopyT.bat
+scripts/V2/webuser/*.csr
+scripts/V2/webuser/ninadkanthi.co.uk.csr
+scripts/V2/webuser/ninadkanthi.co.uk.key
+scripts/V2/webuser/*.crt
+
