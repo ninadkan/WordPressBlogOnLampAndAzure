@@ -1,5 +1,5 @@
 set user=webuser
-set ipAddress=40.81.153.27
+set ipAddress=52.151.106.36
 
 echo %user%@%ipAddress%
 

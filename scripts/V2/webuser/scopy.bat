@@ -4,7 +4,7 @@ rem @echo OFF
 echo "remove any existing remanants of lets encrypt folder"
 del letsencrypt 
 set userName=webuser
-set ipAddress=51.145.125.147
+set ipAddress=52.151.106.28
 
 echo %userName%@%ipAddress%
 echo "copy default files to 1"
@@ -22,7 +22,7 @@ ssh %userName%@%ipAddress% "sudo chown -R webuser:webuser /etc/letsencrypt/"
 scp -r %userName%@%ipAddress%:/etc/letsencrypt/ .
 
 rem Now copy all the files back
-set ipAddress2=52.151.106.39
+set ipAddress2=52.151.106.32
 echo %userName%@%ipAddress2%
 
 rem copy default files to 2
